@@ -25,6 +25,13 @@ public class Narc : MonoBehaviour
     // components
     private Rigidbody2D rig;
     private SpriteRenderer sr;
+    private Vector2 spawnPosition;
+    private Vector2[] movementDirections = new Vector2[] { Vector2.up, Vector2.right, Vector2.down, Vector2.left };
+
+    void Start ()
+    {
+        
+    }
 
     
     void Awake ()
@@ -36,10 +43,14 @@ public class Narc : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
 
         sr = GetComponent<SpriteRenderer>();
+
+        spawnPosition = transform.position;
+        Wander();
     }
 
     void Update()
     {
+        
         float playerDist = Vector2.Distance(transform.position, player.transform.position);
 
         if(playerDist <= attackRange)
@@ -55,13 +66,86 @@ public class Narc : MonoBehaviour
         {
             rig.velocity = Vector2.zero;
             if(escaped == true)
-            AddXpToPlayer();
+            {
+                AddXpToPlayer();
+                Wander();
+            }
+            
+            
+            
+         
         }
     }
 
+    public IEnumerator MoveTo(Vector2 targetPosition, System.Action callback, float delay = 0f)
+    {
+        while (targetPosition != new Vector2(transform.position.x, transform.position.y))
+        {
+           
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, 1f * Time.deltaTime);
+        
+            yield return null;
+        }
+        yield return new WaitForSeconds(delay);
+        callback();
+    }
+
+
+    public void Wander()
+    {
+        Vector2 currentPosition = transform.position;
+        int roll = Random.Range(0, 4);
+        Debug.Log(roll);
+
+
+        if (currentPosition == spawnPosition)
+        {
+            
+            if (roll == 0)
+            {
+                sr.sprite = upSprite;
+               
+            } else if (roll == 1)
+            {
+                sr.sprite = rightSprite;
+                
+            } else if (roll == 2)
+            {
+                sr.sprite = downSprite;
+                
+            } else if (roll == 3)
+            {
+                sr.sprite = leftSprite;
+               
+            }
+            Vector2 destination = currentPosition + movementDirections[roll];
+            StartCoroutine(MoveTo(destination, Wander, Random.Range(2, 5)));
+           
+        }
+        else
+        {
+            if (currentPosition.y > spawnPosition.y)
+            {
+                sr.sprite = downSprite;
+            } else if (currentPosition.y < spawnPosition.y)
+            {
+                sr.sprite = upSprite;
+            } else if ( currentPosition.x < spawnPosition.x)
+            {
+                sr.sprite = rightSprite;
+            } else if (currentPosition.x > spawnPosition.x)
+            {
+                sr.sprite = leftSprite;
+            }
+           
+            StartCoroutine(MoveTo(spawnPosition, Wander, Random.Range(2, 5)));
+            
+        }
+    }
     void Chase()
     {
 
+        StopAllCoroutines();
         escaped = true;
 
         // calculate direction between us and player
