@@ -17,6 +17,10 @@ public class LargeHippie : MonoBehaviour
     private Rigidbody2D rig;
     private SpriteRenderer sr;
     private Animator an;
+    [SerializeField]
+    private DialogueData dialogueData;
+    [SerializeField]
+    private Dialogue dialogue;
 
 
     void Awake()
@@ -31,6 +35,27 @@ public class LargeHippie : MonoBehaviour
         Move();
     }
 
+    public void StartDialogue()
+    {
+        dialogue.StartDialogue(dialogueData.dialogue);
+    }
+
+    public void ResetDialogue()
+    {
+        dialogue.ResetDialogue();
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (Input.GetButtonDown("Fire1") && collision.GetComponent<Player>() != null)
+        {
+            StartDialogue();
+
+            Invoke("ResetDialogue", 4);
+
+        }
+        
+    }
     void Move()
     {
         if (dancing == true)

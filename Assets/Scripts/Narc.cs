@@ -25,13 +25,14 @@ public class Narc : MonoBehaviour
     // components
     private Rigidbody2D rig;
     private SpriteRenderer sr;
+    [SerializeField]
+    private DialogueData dialogueData;
+    [SerializeField]
+    private Dialogue dialogue;
     private Vector2 spawnPosition;
     private Vector2[] movementDirections = new Vector2[] { Vector2.up, Vector2.right, Vector2.down, Vector2.left };
 
-    void Start ()
-    {
-        
-    }
+   
 
     
     void Awake ()
@@ -48,6 +49,10 @@ public class Narc : MonoBehaviour
         Wander();
     }
 
+    public void StartDialogue()
+    {
+        dialogue.StartDialogue(dialogueData.dialogue);
+    }
     void Update()
     {
         
@@ -68,6 +73,7 @@ public class Narc : MonoBehaviour
             if(escaped == true)
             {
                 AddXpToPlayer();
+                dialogue.ResetDialogue();
                 Wander();
             }
             
@@ -95,7 +101,7 @@ public class Narc : MonoBehaviour
     {
         Vector2 currentPosition = transform.position;
         int roll = Random.Range(0, 4);
-        Debug.Log(roll);
+       
 
 
         if (currentPosition == spawnPosition)
@@ -146,6 +152,7 @@ public class Narc : MonoBehaviour
     {
 
         StopAllCoroutines();
+        StartDialogue();
         escaped = true;
 
         // calculate direction between us and player

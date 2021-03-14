@@ -57,6 +57,19 @@ void Update()
     Move();
 }
 
+//private void OnTriggerStay2D(Collider2D collision)
+//    {
+//        if (Input.GetButtonDown("Fire1") && collision.GetComponent<LargeHippie>() != null)
+//        {
+//            collision.GetComponent<LargeHippie>().StartDialogue();
+            
+            
+//        } else if (Input.GetButtonDown("Fire1") && collision.GetComponent<HackeyGuy>() != null)
+//        {
+//            collision.GetComponent<HackeyGuy>().StartDialogue();
+//        }
+//    }
+
 void Move()
 {
     float x = Input.GetAxis("Horizontal");
