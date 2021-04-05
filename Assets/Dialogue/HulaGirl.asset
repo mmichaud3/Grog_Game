@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30804c403f203994c99316f7defdfaa5, type: 3}
-  m_Name: LargeHippie
+  m_Name: HulaGirl
   m_EditorClassIdentifier: 
   dialogue:
-  - I've lost my tunes man!  Please help me find them.
-  - 'Thanks for finding my tunes!  '
+  - I've lost my hula hoop.  Please keep an eye out for it!
+  - Thank you for finding my hula hoop!

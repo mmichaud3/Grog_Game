@@ -5,7 +5,7 @@ using UnityEngine;
 public class LargeHippie : MonoBehaviour
 {
     [Header("Stats")]
-    private bool dancing = true;
+    private bool dancing = false;
 
    [Header("Sprites")]
    public Sprite leftHand;
@@ -22,22 +22,35 @@ public class LargeHippie : MonoBehaviour
     [SerializeField]
     private Dialogue dialogue;
 
+   // private ShowItem item;
+    public GameObject myPrefab;
 
     void Awake()
     {
         rig = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         an = GetComponent<Animator>();
+        
     }
 
     void Update()
     {
+
         Move();
-    }
+
+        
+    } 
 
     public void StartDialogue()
     {
         dialogue.StartDialogue(dialogueData.dialogue);
+
+    }
+
+    public void ResponseDialogue ()
+    {
+        dialogue.ResponseDialogue(dialogueData.dialogue);
+
     }
 
     public void ResetDialogue()
@@ -45,22 +58,40 @@ public class LargeHippie : MonoBehaviour
         dialogue.ResetDialogue();
     }
 
+    public void ShowBoombox()
+    {
+        // item.ShowObject();
+        Instantiate(myPrefab, new Vector3(12, 1, 0), Quaternion.identity);
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetButtonDown("Fire1") && collision.GetComponent<Player>() != null)
+        if (collision.GetComponent<Player>() != null && collision.GetComponent<Player>().hasBoomBox == true)
+        {
+           
+            ResponseDialogue();
+            collision.GetComponent<Player>().RemoveItemFromInventory("Boombox");
+            dancing = true;
+
+            ShowBoombox();
+            Invoke("ResetDialogue", 4);
+
+        }
+        
+          else if ( collision.GetComponent<Player>() != null && dancing == false)
         {
             StartDialogue();
 
             Invoke("ResetDialogue", 4);
 
-        }
+        } 
         
     }
     void Move()
     {
         if (dancing == true)
         {
-            an.Play("LargeHippieLoop");
+            an.enabled = true;
         }
         else
         {

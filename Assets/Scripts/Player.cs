@@ -16,7 +16,7 @@ public class Player : MonoBehaviour , Player1
     public float maxHp;
     public float damageTaken;
     public List<string> inventory = new List<string>();
-
+    public float interactRange;
     private Vector2 facingDirection;
 
     [Header("Experience")]
@@ -31,6 +31,11 @@ public class Player : MonoBehaviour , Player1
     public Sprite upSprite;
     public Sprite leftSprite;
     public Sprite rightSprite;
+
+    [Header("Inventory")]
+    public bool hasHackySack = false;
+    public bool hasBoomBox = false;
+    public bool hasHulaHoop = false;
 
     // components
     private Rigidbody2D rig;
@@ -53,9 +58,29 @@ void Start()
     }
 
 void Update()
-{
-    Move();
-}
+    {
+        Move();
+
+        CheckInteract();
+    }
+
+void CheckInteract ()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, interactRange, 1 << 9);
+
+        if(hit.collider != null)
+        {
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            ui.SetInteractText(hit.collider.transform.position, interactable.interactDescription);
+
+            if (Input.GetButtonDown("Fire1"))
+                interactable.Interact();
+        }
+        else
+        {
+            ui.DisableInteractText();
+        }
+    }
 
 //private void OnTriggerStay2D(Collider2D collision)
 //    {
@@ -69,6 +94,7 @@ void Update()
 //            collision.GetComponent<HackeyGuy>().StartDialogue();
 //        }
 //    }
+
 
 void Move()
 {
@@ -123,19 +149,65 @@ public void UpdateSpriteDirection()
         ui.UpdateXpBar();
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int damageTaken)
     {
         curHp -= damageTaken;
 
         ui.UpdateHealthBar();
+        if (curHp <= 0)
+            Die();
 
 
+    }
+
+    void Die ()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 
     // adds a new item to our inventory
     public void AddItemToInventory(string item)
     {
+        switch (item)
+        {
+            case "Boombox":
+                hasBoomBox = true;
+                break;
+            case "Hacky Sack":
+                hasHackySack = true;
+                break;
+            case "Hula Hoop":
+                hasHulaHoop = true;
+                break;
+            default:
+                
+                break;
+        }
+
+     
         inventory.Add(item);
+        ui.UpdateInventoryText();
+    }
+
+    public void RemoveItemFromInventory(string item)
+    {
+        switch (item)
+        {
+            case "Boombox":
+                hasBoomBox = false;
+                break;
+            case "Hacky Sack":
+                hasHackySack = false;
+                break;
+            case "Hula Hoop":
+                hasHulaHoop = false;
+                break;
+            default:
+
+                break;
+        }
+
+        inventory.Remove(item);
         ui.UpdateInventoryText();
     }
 

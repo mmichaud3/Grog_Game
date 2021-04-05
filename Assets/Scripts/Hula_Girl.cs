@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HackeyGuy : MonoBehaviour
+public class Hula_Girl : MonoBehaviour
 {
     [Header("Stats")]
-    private bool hacking = false;
+    private bool hula = false;
 
     [Header("Sprites")]
-   
+
 
     // components
     private Rigidbody2D rig;
@@ -30,7 +30,7 @@ public class HackeyGuy : MonoBehaviour
     void Update()
     {
         Move();
-    } 
+    }
 
     public void StartDialogue()
     {
@@ -49,19 +49,19 @@ public class HackeyGuy : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.GetComponent<Player>() != null && collision.GetComponent<Player>().hasHackySack == true)
+        if (collision.GetComponent<Player>() != null && collision.GetComponent<Player>().hasHulaHoop == true)
         {
 
             ResponseDialogue();
-            collision.GetComponent<Player>().RemoveItemFromInventory("Hacky Sack");
-            hacking = true;
-            
+            collision.GetComponent<Player>().RemoveItemFromInventory("Hula Hoop");
+            hula = true;
+
 
             Invoke("ResetDialogue", 4);
 
         }
 
-        else if (collision.GetComponent<Player>() != null && hacking == false)
+        else if (collision.GetComponent<Player>() != null && hula == false)
         {
             StartDialogue();
 
@@ -72,7 +72,7 @@ public class HackeyGuy : MonoBehaviour
     }
     void Move()
     {
-        if (hacking == true)
+        if (hula == true)
         {
             an.enabled = true;
         }
@@ -82,5 +82,4 @@ public class HackeyGuy : MonoBehaviour
         }
 
     }
-
 }

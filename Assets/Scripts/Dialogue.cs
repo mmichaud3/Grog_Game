@@ -48,4 +48,12 @@ public class Dialogue : MonoBehaviour
         dialoguePanel.SetActive(false);
         dialogueIndex = 0;
     }
+
+    public void ResponseDialogue(string[] dialogue )
+    {
+        this.dialogue = dialogue;
+        dialoguePanel.SetActive(true);
+        dialogueText.text = dialogue[1];
+
+    }
 }

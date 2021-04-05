@@ -15,6 +15,11 @@ public class Thugs : MonoBehaviour
     public bool escaped = false;
     private Player player;
 
+    [Header("Attack")]
+    public int damage;
+    public float attackRate;
+    public float lastAttackTime;
+
     [Header("Sprites")]
     public Sprite downSprite;
     public Sprite upSprite;
@@ -31,6 +36,7 @@ public class Thugs : MonoBehaviour
     private Dialogue dialogue;
     private Vector2 spawnPosition;
     private Vector2[] movementDirections = new Vector2[] { Vector2.up, Vector2.right, Vector2.down, Vector2.left };
+    private ParticleSystem hitEffect;
 
     void Awake()
     {
@@ -41,6 +47,7 @@ public class Thugs : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
 
         sr = GetComponent<SpriteRenderer>();
+        hitEffect = gameObject.GetComponentInChildren<ParticleSystem>();
 
         spawnPosition = transform.position;
         Wander();
@@ -58,6 +65,9 @@ public class Thugs : MonoBehaviour
         if (playerDist <= attackRange)
         {
             // attack the player
+            if (Time.time - lastAttackTime >= attackRate)
+                Attack();
+
             rig.velocity = Vector2.zero;
         }
         else if (playerDist <= chaseRange)
@@ -76,6 +86,21 @@ public class Thugs : MonoBehaviour
             }
                 
         }
+    }
+
+    void Attack ()
+    {
+        lastAttackTime = Time.time;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, attackRange, 1 << 8);
+
+        if (hit.collider != null)
+        {
+            hit.collider.GetComponent<Player>().TakeDamage(damage);
+
+            hitEffect.transform.position = hit.collider.transform.position;
+            hitEffect.Play();
+        }
+        
     }
 
     public IEnumerator MoveTo(Vector2 targetPosition, System.Action callback, float delay = 0f)
