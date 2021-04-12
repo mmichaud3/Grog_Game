@@ -16167,8 +16167,9 @@ GameObject:
   m_Component:
   - component: {fileID: 586137053}
   - component: {fileID: 586137052}
-  - component: {fileID: 586137051}
+  - component: {fileID: 586137054}
   - component: {fileID: 586137050}
+  - component: {fileID: 586137051}
   m_Layer: 0
   m_Name: Dealer
   m_TagString: Untagged
@@ -16197,8 +16198,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!70 &586137051
-CapsuleCollider2D:
+--- !u!58 &586137051
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -16211,8 +16212,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.4375, y: 1}
-  m_Direction: 0
+  serializedVersion: 2
+  m_Radius: 2
 --- !u!212 &586137052
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16272,12 +16273,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586137049}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.31, y: 2.35, z: 0}
+  m_LocalPosition: {x: -15.78, y: 4.93, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &586137054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586137049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9006e68f2a5a1dc42a8e43bed3a9803d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueData: {fileID: 11400000, guid: 13fc7f295cfac4441a66e772310ea58d, type: 2}
+  dialogue: {fileID: 105541047}
 --- !u!1 &587407775
 GameObject:
   m_ObjectHideFlags: 0
@@ -18128,6 +18143,7 @@ MonoBehaviour:
   damageTaken: 0
   inventory: []
   interactRange: 1
+  entered: 0
   curLevel: 0
   curXp: 0
   xpToNextLevel: 5
@@ -18143,6 +18159,7 @@ MonoBehaviour:
   hasHackySack: 0
   hasBoomBox: 0
   hasHulaHoop: 0
+  money: 50
 --- !u!4 &1491197324
 Transform:
   m_ObjectHideFlags: 0
@@ -18172,7 +18189,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 2
 --- !u!1001 &1524206723
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class Player : MonoBehaviour , Player1
     public List<string> inventory = new List<string>();
     public float interactRange;
     private Vector2 facingDirection;
+    public bool entered = false;
 
     [Header("Experience")]
     public int curLevel;
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour , Player1
     public bool hasHackySack = false;
     public bool hasBoomBox = false;
     public bool hasHulaHoop = false;
+    public int money = 50;
 
     // components
     private Rigidbody2D rig;
@@ -62,6 +64,27 @@ void Update()
         Move();
 
         CheckInteract();
+
+        AddToInventory();
+    }
+
+void AddToInventory()
+    {
+        
+        if (entered == true && Input.GetKeyUp("1") && money >= 40)
+        {
+            Debug.Log(entered);
+            AddItemToInventory("Shrooms");
+
+        }
+        else if (entered == true && Input.GetKeyUp("2") && money >= 10)
+        {
+            AddItemToInventory("Acid");
+        }
+        else if (entered == true && Input.GetKeyUp("3") && money >= 20)
+        {
+            AddItemToInventory("Molly");
+        }
     }
 
 void CheckInteract ()
@@ -81,22 +104,26 @@ void CheckInteract ()
             ui.DisableInteractText();
         }
     }
+ public void OnTriggerEnter2D(Collider2D collision)
+   {
+        if (collision.GetComponent<Dealer>() != null)
+        {
+            entered = true;
+            Debug.Log(entered);
+        }    
+    }
 
-//private void OnTriggerStay2D(Collider2D collision)
-//    {
-//        if (Input.GetButtonDown("Fire1") && collision.GetComponent<LargeHippie>() != null)
-//        {
-//            collision.GetComponent<LargeHippie>().StartDialogue();
-            
-            
-//        } else if (Input.GetButtonDown("Fire1") && collision.GetComponent<HackeyGuy>() != null)
-//        {
-//            collision.GetComponent<HackeyGuy>().StartDialogue();
-//        }
-//    }
+   public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Dealer>() != null)
+        {
+            entered = false;
+            Debug.Log(entered);
+        }
+    }
 
 
-void Move()
+    void Move()
 {
     float x = Input.GetAxis("Horizontal");
     float y = Input.GetAxis("Vertical");
@@ -178,6 +205,15 @@ public void UpdateSpriteDirection()
                 break;
             case "Hula Hoop":
                 hasHulaHoop = true;
+                break;
+            case "Shrooms":
+                money -= 40;
+                break;
+            case "Acid":
+                money -= 10;
+                break;
+            case "Molly":
+                money -= 20;
                 break;
             default:
                 
